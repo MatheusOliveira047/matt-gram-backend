@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const UserController = require("../controllers/UserController")
 
-router.post("/users/register",UserController.register)
+
+const validate = require("../middlewares/handleValidation")
+
+router.post("/users/register", validate ,UserController.register)
 
 module.exports = router
