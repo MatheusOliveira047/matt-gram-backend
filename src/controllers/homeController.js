@@ -1,5 +1,5 @@
 const home = (req,res)=>{
-  res.send('olá teste')
+  res.status(200).json({msg:"Deu certo"})
 }
 
 
