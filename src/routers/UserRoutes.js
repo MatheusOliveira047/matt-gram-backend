@@ -1,4 +1,6 @@
 const router = require('express').Router()
+
+// Controllers
 const {
   register,
   login,
@@ -7,7 +9,7 @@ const {
   getUserById
 } = require("../controllers/UserController")
 
-
+// middlewares
 const validate = require("../middlewares/handleValidation")
 const {imageUpload} = require("../middlewares/imageUploads")
 const {
@@ -17,6 +19,7 @@ const {
 } = require("../middlewares/userValidations")
 const authGuard = require("../middlewares/authGuard")
 
+// routes
 router.post("/register", userCreateValidation(), validate, register);
 router.post('/login', loginValidation(),validate,login)
 router.get('/profile', authGuard,getCurrentUser)
