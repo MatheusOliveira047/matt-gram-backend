@@ -1,7 +1,8 @@
-const router = require('express').Router()
+const express = require('express')
+const router = express()
 
-router.use("/api/auth",require("./userRouter"))
+router.use("/api/users", require("./UserRoutes"))
 
 router.get('/',(req,res)=>{res.status(200).json({msg:"Deu certo"})})
 
-module.exports = router
+module.exports = router;
