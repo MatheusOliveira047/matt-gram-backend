@@ -104,11 +104,72 @@ const updatePhoto = async(req,res)=>{
   res.status(200).json({photo,message:"Foto atualizada com sucesso!!!"})
 }
 
+const likePhoto = async(req,res)=>{
+
+  const {id} = req.params
+  const reqUser = req.user
+  const photo = await Photo.findById(id)
+
+  if(!photo){
+    return res.status(404).json({errors:['Foto não encontrada']})
+  }
+
+  if(photo.likes.includes(reqUser._id)){
+    res.status(422).json({errors:["Você já curtiu a foto"]})
+  }
+
+  photo.likes.push(reqUser._id)
+
+  photo.save()
+
+  return res.status(200).json({photoId:id,userId:reqUser._id,message:"A foto foi curtida."})
+}
+
+const commentPhoto = async(req,res)=>{
+  const {id} = req.params
+  const {comment} = req.body
+
+  const reqUser = req.user
+
+  const photo = await Photo.findById(id)
+  
+  if(!photo){
+    return res.status(404).json({errors:['Foto não encontrada']})
+  }
+
+  const userComment = {
+    comment,
+    userName: reqUser.name,
+    userImage: reqUser.profileImage,
+    userId: reqUser._id
+  }
+
+  photo.comments.push(userComment)
+
+  await photo.save()
+
+  return res.status(200).json({
+    comment: userComment,
+    message:"O comentário foi adicionado"
+  })
+}
+
+const searchPhoto = async(req,res)=>{
+  const {q} = req.query
+
+  const photos = await Photo.find({title: new RegExp(q, "i")}).exec()
+
+  res.status(200).json(photos)
+}
+
 module.exports = {
   insertPhoto,
   deletePhoto,
   getAllPhotos,
   getUserPhotos,
   getPhotoById,
-  updatePhoto
+  updatePhoto,
+  likePhoto,
+  commentPhoto,
+  searchPhoto
 }
