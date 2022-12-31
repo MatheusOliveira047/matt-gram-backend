@@ -6,7 +6,8 @@ const {
   insertPhoto,
   deletePhoto,
   getAllPhotos,
-  getUserPhotos
+  getUserPhotos,
+  getPhotoById
 } = require("../controllers/PhotoController")
 
 
@@ -22,6 +23,7 @@ router.post('/',authGuard, imageUpload.single("image"),photoInsertValidation(),v
 router.delete("/:id",authGuard,deletePhoto)
 router.get('/',authGuard,getAllPhotos)
 router.get('/user/:id',authGuard,getUserPhotos)
+router.get("/:id",authGuard, getPhotoById)
 
 
 module.exports = router
